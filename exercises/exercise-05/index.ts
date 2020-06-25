@@ -49,6 +49,7 @@ interface Admin {
 
 type Person = User | Admin;
 
+
 const persons: Person[] = [
     { type: 'user', name: 'Max Mustermann', age: 25, occupation: 'Chimney sweep' },
     { type: 'admin', name: 'Jane Doe', age: 32, role: 'Administrator' },
@@ -64,7 +65,7 @@ function logPerson(person: Person) {
     );
 }
 
-function filterPersons(persons: Person[], personType: string, criteria: unknown): unknown[] {
+function filterPersons(persons: Person[], personType: string, criteria: Partial<Person>): unknown[] {
     return persons
         .filter((person) => person.type === personType)
         .filter((person) => {

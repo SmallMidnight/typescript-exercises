@@ -47,6 +47,10 @@ interface Admin {
 
 type Person = User | Admin;
 
+// type Criteria = {
+//     [K in keyof User]?: User[K];
+// }
+
 const persons: Person[] = [
     { type: 'user', name: 'Max Mustermann', age: 25, occupation: 'Chimney sweep' },
     {
@@ -95,7 +99,8 @@ function logPerson(person: Person) {
     console.log(` - ${chalk.green(person.name)}, ${person.age}, ${additionalInformation}`);
 }
 
-function filterUsers(persons: Person[], criteria: User): User[] {
+// function filterUsers(persons: Person[], criteria: Criteria): User[] {
+function filterUsers(persons: Person[], criteria: Partial<User> ): User[] {
     return persons.filter(isUser).filter((user) => {
         let criteriaKeys = Object.keys(criteria) as (keyof User)[];
         return criteriaKeys.every((fieldName) => {
@@ -107,9 +112,11 @@ function filterUsers(persons: Person[], criteria: User): User[] {
 console.log(chalk.yellow('Users of age 23:'));
 
 filterUsers(
+    //少了字段，所以可以将criteria的类型变成可选的，使用Partial, 也可以自己mapped-types 使用keyof
     persons,
     {
-        age: 23
+        age: 23,
+        type: 'user'
     }
 ).forEach(logPerson);
 
